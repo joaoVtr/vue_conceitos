@@ -20,9 +20,9 @@
                 </div>
                 <div class="product-info">
                     <h1>{{product_title}}</h1>
-                    <p v-if="inSotck > 10">In Stock </p>
-                    <p v-else-if="inSotck > 0 && inSotck <= 10">Low Stock: {{inSotck}}</p>
-                    <p v-else>Out of Stock: {{inSotck}}</p>
+                    <p v-if="inStock > 10">In Stock </p>
+                    <p v-else-if="inStock > 0 && inStock <= 10">Low Stock: {{inStock}}</p>
+                    <p v-else>Out of Stock: {{inStock}}</p>
                     <ul>
                         <li v-for="detail in details">
                             {{detail}}
@@ -30,10 +30,17 @@
                     </ul>
                     <div v-for="variant in variants" :key="variant.id"
                     @mouseover="changeImage(variant.image)"
+                    class="color-circle"
+                    :style="{backgroundColor: variant.color}"
                     >
-                        {{variant.color}}
                     </div>
-                    <button class="button" @click="addToCart">Add to Cart</button>
+                    <button
+                     class="button"
+                     :class = "{disabledButton: inStock < 1}"
+                     @click="addToCart"
+                    :disabled = "inStock < 1"
+                    >Add to Cart
+                    </button>
                 </div>
             </div>
         </div>
@@ -44,9 +51,10 @@
   
     createApp({
       setup() {
+        const inStock = ref (13);
         const cart = ref(0);
         const addToCart = () => {
-            if(cart.value < 10){
+            if(cart.value < inStock.value){
                 cart.value ++
             }
         }
@@ -58,7 +66,7 @@
             product_title: ref("Nome do produto"),
             image,
             img_product: "Camisa",
-            inSotck : ref(100),
+            inStock,
             details:  ['50% cotton', '30% polyester', '20% wool'],
             variants: [
                 {id:1,color:'blue', image: "./assets/images/t-shirt-blue.png" }, 
