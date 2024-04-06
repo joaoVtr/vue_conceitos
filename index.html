@@ -19,10 +19,8 @@
                     <img :src="image"  :alt="img_product">
                 </div>
                 <div class="product-info">
-                    <h1>{{product_title}}</h1>
-                    <p v-if="inStock > 10">In Stock </p>
-                    <p v-else-if="inStock > 0 && inStock <= 10">Low Stock: {{inStock}}</p>
-                    <p v-else>Out of Stock: {{inStock}}</p>
+                    <h1>{{titleWithBrand}}</h1>
+                      <h2> {{inStockComputed}}</h2>
                     <ul>
                         <li v-for="detail in details">
                             {{detail}}
@@ -47,13 +45,13 @@
     </div>
 </body>
 <script>
-    const { createApp, ref } = Vue
+    const { createApp, ref, computed } = Vue
   
     createApp({
       setup() {
         const inStock = ref (13);
         const cart = ref(0);
-        const addToCart = () => {
+        const addToCart = () => { 
             if(cart.value < inStock.value){
                 cart.value ++
             }
@@ -62,8 +60,24 @@
         const changeImage = (varImage) => {
             image.value = varImage
         }
+        const product_title =  "T-Shirt";
+        const brand = 'La Concha'; 
+        const titleWithBrand = computed( ()=>{
+            return product_title + " - by "  +  brand;
+        });
+
+        const inStockComputed = computed( () => {
+              if (inStock.value > 10) {
+                return "In Stock";  
+              }else if(inStock.value <=0){
+                return "Out of Stock";
+              }else{
+                return "Low Stock"
+              }
+        })
         return {
-            product_title: ref("Nome do produto"),
+            product_title: ref("T-Shirt"),
+            brand,
             image,
             img_product: "Camisa",
             inStock,
@@ -74,7 +88,9 @@
             ],
             cart,
             addToCart,
-            changeImage
+            changeImage,
+            titleWithBrand,
+            inStockComputed
         }
       }
     }).mount('#app')
