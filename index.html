@@ -10,9 +10,7 @@
 </head>
 <body>
     <div id="app">
-        <div class="cart">
-            Cart: {{cart}}
-        </div>
+        <cart-display :carteiro="cart"></cart-display>
         <product-display @add-to-cart = "addToCart"> </product-display>
     </div>
 </body>
@@ -20,6 +18,7 @@
 <script src="./main.js"> </script>
 <!-- Import do componente -->
 <script src="./Components/Product.js"> </script>
+<script src="./Components/Cart.js"> </script>
 <!-- Monta do APP -->
 <script>  app.mount("#app")</script>
 </html>
